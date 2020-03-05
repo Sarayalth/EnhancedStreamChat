@@ -466,19 +466,16 @@ namespace EnhancedStreamChat.Textures
             yield return Utilities.Download("https://api.betterttv.net/2/emotes", Utilities.DownloadType.Raw, null, (web) =>
             {
                 JSONNode json = JSON.Parse(web.downloadHandler.text);
-                if (json["status"].AsInt == 200)
+                if (json["emotes"] != null)
                 {
                     JSONArray emotes = json["emotes"].AsArray;
                     foreach (JSONObject o in emotes)
                     {
-                        if (o["channel"] == null)
-                        {
-                            if (o["imageType"] != "gif")
-                                BTTVEmoteIDs.TryAdd(o["code"], o["id"]);
-                            else
-                                BTTVAnimatedEmoteIDs.TryAdd(o["code"], o["id"]);
-                            emotesCached++;
-                        }
+                        if (o["imageType"] != "gif")
+                            BTTVEmoteIDs.TryAdd(o["code"], o["id"]);
+                        else
+                            BTTVAnimatedEmoteIDs.TryAdd(o["code"], o["id"]);
+                        emotesCached++;
                     }
                 }
             });
@@ -492,7 +489,7 @@ namespace EnhancedStreamChat.Textures
             yield return Utilities.Download($"https://api.betterttv.net/2/channels/{TwitchLoginConfig.Instance.TwitchChannelName}", Utilities.DownloadType.Raw, null, (web) =>
             {
                 JSONNode json = JSON.Parse(web.downloadHandler.text);
-                if (json["status"].AsInt == 200)
+				if (json["emotes"] != null)
                 {
                     JSONArray emotes = json["emotes"].AsArray;
                     foreach (JSONObject o in emotes)

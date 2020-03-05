@@ -3,7 +3,7 @@ using System.Linq;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using IllusionPlugin;
+using IPA.Old;
 using EnhancedStreamChat.Chat;
 using EnhancedStreamChat.UI;
 using System.Threading.Tasks;
