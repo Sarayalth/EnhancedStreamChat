@@ -1,12 +1,15 @@
 ﻿{
-  "author": "brian91292, angturil and sarayalth",
-  "description": "Enhanced Stream Chat is a rich text stream chat integration mod (currently supports Twitch/YouTube) with full unicode, emote, cheermote, and emoji support.",
+  "$schema": "https://raw.githubusercontent.com/beat-saber-modding-group/BSIPA-MetadataFileSchema/master/Schema.json",
+  "author": "brian91292, angturil, sarayalth",
+  "description": "Enhanced Stream Chat is a rich text Twitch/YouTube chat integration mod, with full unicode, emote, cheermote, and emoji support.",
   "gameVersion": "1.8.0",
-  "id": "Enhanced Stream Chat",
+  "id": "EnhancedStreamChat",
   "name": "Enhanced Stream Chat",
   "version": "2.2.1",
-  "features": [
-  ],
+  "dependsOn": {
+    "BeatSaberMarkupLanguage": "^1.1.1",
+    "Stream Core": "^2.2.4"
+  },
   "links": {
     "project-source": "https://github.com/Sarayalth/EnhancedStreamChat"
   }
