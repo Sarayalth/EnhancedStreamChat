@@ -3,7 +3,7 @@ using System.Linq;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using IPA.Old;
+using IPA;
 using EnhancedStreamChat.Chat;
 using EnhancedStreamChat.UI;
 using System.Threading.Tasks;
@@ -17,25 +17,28 @@ using StreamCore.YouTube;
 
 namespace EnhancedStreamChat
 {
-    public class Plugin : IPlugin
+	[Plugin(RuntimeOptions.SingleStartInit)]
+	public class Plugin
     {
-        public static readonly string ModuleName = "Enhanced Stream Chat";
-        public string Name => ModuleName;
-        public string Version => "2.2.0";
-        
-        public static Plugin Instance { get; private set; }
+		public static readonly string ModuleName = "Enhanced Stream Chat";
+		public string Name => ModuleName;
+		public string Version => "2.2.1";
+
+		public static Plugin Instance { get; private set; }
 
         private ChatConfig ChatConfig;
 
+		[Init]
         public static void Log(string text,
                 [CallerFilePath] string file = "",
                 [CallerMemberName] string member = "",
                 [CallerLineNumber] int line = 0)
         {
-            Console.WriteLine($"{ModuleName}::{Path.GetFileName(file)}->{member}({line}): {text}");
-        }
+			Console.WriteLine($"{ModuleName}::{Path.GetFileName(file)}->{member}({line}): {text}");
+		}
 
-        public void OnApplicationStart()
+		[OnStart]
+		public void OnApplicationStart()
         {
             if (Instance != null) return;
             Instance = this;
@@ -54,7 +57,8 @@ namespace EnhancedStreamChat
             }
         }
 
-        public void OnApplicationQuit()
+		[OnExit]
+		public void OnApplicationQuit()
         {
         }
 

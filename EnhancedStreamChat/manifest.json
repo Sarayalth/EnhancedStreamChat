@@ -1,0 +1,13 @@
+﻿{
+  "author": "brian91292, angturil and sarayalth",
+  "description": "Enhanced Stream Chat is a rich text stream chat integration mod (currently supports Twitch/YouTube) with full unicode, emote, cheermote, and emoji support.",
+  "gameVersion": "1.8.0",
+  "id": "Enhanced Stream Chat",
+  "name": "Enhanced Stream Chat",
+  "version": "2.2.1",
+  "features": [
+  ],
+  "links": {
+    "project-source": "https://github.com/Sarayalth/EnhancedStreamChat"
+  }
+}
