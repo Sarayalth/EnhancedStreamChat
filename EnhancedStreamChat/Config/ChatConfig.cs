@@ -62,9 +62,9 @@ namespace EnhancedStreamChat.Config
         [UIValue("reverse-chat-order")]
         public bool ReverseChatOrder = false;
         [UIValue("show-bttv-emotes")]
-        public bool ShowBTTVEmotes = true;
+        public bool ShowBTTVEmotes = false;
         [UIValue("show-ffz-emotes")]
-        public bool ShowFFZEmotes = true;
+        public bool ShowFFZEmotes = false;
 
         // Filters
         [UIValue("clear-chat")]
