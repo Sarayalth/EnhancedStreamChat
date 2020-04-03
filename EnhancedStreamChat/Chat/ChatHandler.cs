@@ -165,65 +165,74 @@ namespace EnhancedStreamChat
 
         public void Update()
         {
-            if (Drawing.MaterialsCached)
-            {
-                HandleStatusMessages();
+			try
+			{
+				if (Drawing.MaterialsCached)
+				{
+					HandleStatusMessages();
 
-                if (_configChanged)
-                    OnConfigChanged();
+					if (_configChanged)
+						OnConfigChanged();
 
-                // Make sure to delete any purged messages right away
-                if (_timeoutQueue.Count > 0 && _timeoutQueue.TryDequeue(out var id))
-                    PurgeChatMessagesInternal(id);
+					// Make sure to delete any purged messages right away
+					if (_timeoutQueue.Count > 0 && _timeoutQueue.TryDequeue(out var id))
+						PurgeChatMessagesInternal(id);
 
-                if (_waitForFrames > 0)
-                {
-                    _waitForFrames--;
-                    return;
-                }
+					if (_waitForFrames > 0)
+					{
+						_waitForFrames--;
+						return;
+					}
 
-                //// Wait try to display any new chat messages if our fps is tanking
-                //float fps = 1.0f / Time.deltaTime;
-                //if (!Plugin.Instance.IsAtMainMenu && fps < XRDevice.refreshRate - 5)
-                //    return;
+					//// Wait try to display any new chat messages if our fps is tanking
+					//float fps = 1.0f / Time.deltaTime;
+					//if (!Plugin.Instance.IsAtMainMenu && fps < XRDevice.refreshRate - 5)
+					//    return;
 
-                // Display any messages that we've cached all the resources for and prepared for rendering
-                if (RenderQueue.Count > 0 && !_messageRendering)
-                {
-                    if (RenderQueue.TryDequeue(out var messageToSend))
-                    {
-                        if (ChatConfig.instance.FilterBroadcasterMessages && (messageToSend.origMessage.user.Twitch.isBroadcaster || messageToSend.origMessage.user.YouTube.isChatOwner))
-                            return;
-                        if (ChatConfig.instance.FilterCommandMessages && messageToSend.origMessage.message.StartsWith("!"))
-                            return;
-                        if (ChatConfig.instance.FilterSelfMessages && messageToSend.origMessage.user.id == TwitchWebSocketClient.OurTwitchUser.id)
-                            return;
+					// Display any messages that we've cached all the resources for and prepared for rendering
+					if (RenderQueue.Count > 0 && !_messageRendering)
+					{
+						if (RenderQueue.TryDequeue(out var messageToSend))
+						{
+							if (ChatConfig.instance.FilterBroadcasterMessages)
+								if (messageToSend.origMessage.user != null && (messageToSend.origMessage.user.Twitch.isBroadcaster || messageToSend.origMessage.user.YouTube.isChatOwner))
+									return;
+							if (ChatConfig.instance.FilterCommandMessages && messageToSend.origMessage.message.StartsWith("!"))
+								return;
+							if (ChatConfig.instance.FilterSelfMessages)
+								if (messageToSend.origMessage.user != null && messageToSend.origMessage.user.id == TwitchWebSocketClient.OurTwitchUser.id)
+									return;
 
-                        if (ChatMessageFilters != null)
-                        {
-                            foreach (var filter in ChatMessageFilters.GetInvocationList())
-                            {
-                                try
-                                {
-                                    var ret = (bool)filter?.DynamicInvoke(messageToSend.origMessage);
-                                    if (ret)
-                                        return;
-                                }
-                                catch (Exception ex)
-                                {
-                                    Plugin.Log(ex.ToString());
-                                }
-                            }
-                        }
-                        StartCoroutine(AddNewChatMessage(messageToSend.displayMsg, messageToSend));
-                    }
-                }
-                // Save images to file when we're at the main menu
-                else if (Globals.IsAtMainMenu && ImageDownloader.ImageSaveQueue.Count > 0 && ImageDownloader.ImageSaveQueue.TryDequeue(out var saveInfo))
-                {
-                    File.WriteAllBytes(saveInfo.path, saveInfo.data);
-                }
-            }
+							if (ChatMessageFilters != null)
+							{
+								foreach (var filter in ChatMessageFilters.GetInvocationList())
+								{
+									try
+									{
+										var ret = (bool)filter?.DynamicInvoke(messageToSend.origMessage);
+										if (ret)
+											return;
+									}
+									catch (Exception ex)
+									{
+										Plugin.Log(ex.ToString());
+									}
+								}
+							}
+							StartCoroutine(AddNewChatMessage(messageToSend.displayMsg, messageToSend));
+						}
+					}
+					// Save images to file when we're at the main menu
+					else if (Globals.IsAtMainMenu && ImageDownloader.ImageSaveQueue.Count > 0 && ImageDownloader.ImageSaveQueue.TryDequeue(out var saveInfo))
+					{
+						File.WriteAllBytes(saveInfo.path, saveInfo.data);
+					}
+				}
+			}
+			catch(Exception e)
+			{
+				Plugin.Log(e.ToString());
+			}
         }
 
         public void LateUpdate()
