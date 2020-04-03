@@ -1,6 +1,8 @@
 # Mod Info
 Enhanced Stream Chat is a rich text stream chat integration mod (currently supports Twitch/YouTube) with full unicode, emote, cheermote, and emoji support.
 
+# KNOWN BUG OR SOMETHING, THIS MAY NOT WORK WITH VERSUS MOD INSTALLED.
+
 # Features
 - Full Rich Text Support, see ALL of your Twitch/YouTube chat while immersed in VR!
   - This includes all Twitch badges, emotes, cheermotes, BetterTwitchTV emotes, FrankerFaceZ emotes, all Emojis (provided by [twemoji](https://github.com/twitter/twemoji)) and even animated emotes!
